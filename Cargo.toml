@@ -1,0 +1,26 @@
+[package]
+name = "yolo-server"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Zero-crate YOLO26n-seg detection service: system libonnxruntime over FFI, frames from the ffmpeg CLI"
+publish = false
+license = "AGPL-3.0-only"
+
+# Zero-crate: this list stays empty. Inference is the system libonnxruntime
+# (FFI), frames come from the ffmpeg command line, everything else is std.
+# A crate needs an explicit yes.
+[dependencies]
+
+[features]
+default = ["onnxruntime"]
+# Links the system libonnxruntime. Turn it off (`--no-default-features`) only to
+# run the pure-logic tests on a machine that does not have the library.
+onnxruntime = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "unwind"
+strip = true
